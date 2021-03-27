@@ -14,11 +14,11 @@ public class Triangulo {
         this.altura = altura;
     }
     
-    public double getArea(){
+    public Double getArea(){
         return (this.base*this.altura)/2;
     }
     
-    public double getPerimetro(){
+    public Double getPerimetro(){
         return this.base * 3;
     }
 }

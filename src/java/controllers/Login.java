@@ -9,18 +9,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Triangulo;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author rogev
  */
-@WebServlet(name = "muestraResultado", urlPatterns = {"/muestraResultado"})
-public class muestraResultado extends HttpServlet {
+@WebServlet(name = "login", urlPatterns = {"/login"})
+public class Login extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,21 +34,10 @@ public class muestraResultado extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           double base = Double.parseDouble(request.getParameter("base"));
-           double altura = Double.parseDouble(request.getParameter("altura"));
-           Triangulo triangulo = new Triangulo(base,altura);
-
-           Cookie ck = new Cookie("altura",request.getParameter("altura"));
-           response.addCookie(ck);
-           ck = new Cookie("base",request.getParameter("base")); 
-           response.addCookie(ck);
-           ck = new Cookie("area",triangulo.getArea().toString()); 
-           response.addCookie(ck);
-           ck = new Cookie("perimetro",triangulo.getPerimetro().toString());
-           response.addCookie(ck);
-
-           request.setAttribute("triangulo", triangulo);
-           request.getRequestDispatcher("resultado.jsp").forward(request, response);
+            HttpSession sesion = request.getSession(false);
+            String usuario = request.getParameter("usuario");
+            sesion.setAttribute("usuario", usuario);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }
 
