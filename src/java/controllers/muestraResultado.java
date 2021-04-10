@@ -35,21 +35,28 @@ public class muestraResultado extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-           double base = Double.parseDouble(request.getParameter("base"));
-           double altura = Double.parseDouble(request.getParameter("altura"));
-           Triangulo triangulo = new Triangulo(base,altura);
+            
+            if(request.getAttribute("error") != null){
+                request.setAttribute("error", 1);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            }else{
+                double base = Double.parseDouble(request.getParameter("base"));
+                double altura = Double.parseDouble(request.getParameter("altura"));
+                Triangulo triangulo = new Triangulo(base,altura);
 
-           Cookie ck = new Cookie("altura",request.getParameter("altura"));
-           response.addCookie(ck);
-           ck = new Cookie("base",request.getParameter("base")); 
-           response.addCookie(ck);
-           ck = new Cookie("area",triangulo.getArea().toString()); 
-           response.addCookie(ck);
-           ck = new Cookie("perimetro",triangulo.getPerimetro().toString());
-           response.addCookie(ck);
+                Cookie ck = new Cookie("altura",request.getParameter("altura"));
+                response.addCookie(ck);
+                ck = new Cookie("base",request.getParameter("base")); 
+                response.addCookie(ck);
+                ck = new Cookie("area",triangulo.getArea().toString()); 
+                response.addCookie(ck);
+                ck = new Cookie("perimetro",triangulo.getPerimetro().toString());
+                response.addCookie(ck);
 
-           request.setAttribute("triangulo", triangulo);
-           request.getRequestDispatcher("resultado.jsp").forward(request, response);
+                request.setAttribute("triangulo", triangulo);
+                request.getRequestDispatcher("resultado.jsp").forward(request, response);
+            }
+          
         }
     }
 
